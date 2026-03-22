@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<title>ProxyMe Agent</title>
+
+<style>
+
+/* ✅ YOUR ORIGINAL CSS (UNCHANGED) */
+
+body{
+width:340px;
+height:500px;
+margin:0;
+background:black;
+color:white;
+font-family:Arial, Helvetica, sans-serif;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.container{
+width:90%;
+text-align:center;
+}
+
+.logo{
+font-size:14px;
+letter-spacing:2px;
+opacity:0.9;
+margin-bottom:4px;
+}
+
+.hero{
+position:relative;
+height:140px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+width:170px;
+height:170px;
+background:radial-gradient(circle,
+rgba(168,85,247,0.35) 0%,
+rgba(99,102,241,0.25) 40%,
+transparent 70%);
+filter:blur(35px);
+}
+
+.blobs{
+position:absolute;
+top:0;
+left:50%;
+transform:translateX(-50%);
+width:130px;
+animation:floatBlob 6s ease-in-out infinite;
+}
+
+.star{
+position:absolute;
+top:8px;
+right:70px;
+width:70px;
+animation:floatStar 5s ease-in-out infinite;
+}
+
+@keyframes floatBlob{
+0%{transform:translate(-50%,0px)}
+50%{transform:translate(-50%,8px)}
+100%{transform:translate(-50%,0px)}
+}
+
+@keyframes floatStar{
+0%{transform:translateY(0px)}
+50%{transform:translateY(-6px)}
+100%{transform:translateY(0px)}
+}
+
+.page{display:none;}
+.active{display:block;}
+
+.buttonRow{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:10px;
+}
+
+.pill{
+position:relative;
+min-height:34px;
+padding:8px 16px;
+width:auto;
+max-width:90%;
+border-radius:30px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+color:white;
+cursor:pointer;
+border:1px solid rgba(168,85,247,0.8);
+background:
+radial-gradient(circle at 30% 30%,
+rgba(168,85,247,0.35),
+transparent 60%),
+radial-gradient(circle at 70% 70%,
+rgba(99,102,241,0.35),
+transparent 60%),
+linear-gradient(145deg,
+#0b0b0b,
+#151515);
+box-shadow:
+0 0 8px rgba(168,85,247,0.5),
+0 0 18px rgba(168,85,247,0.25);
+transition:all 0.25s ease;
+overflow:hidden;
+}
+
+.listening-pill.active {
+  box-shadow:
+    0 0 14px rgba(168,85,247,1),
+    0 0 32px rgba(168,85,247,0.8);
+}
+
+.listening-pill.inactive {
+  opacity: 0.5;
+  box-shadow: none;
+}
+.pill::after{
+content:"";
+position:absolute;
+top:0;
+left:-120%;
+width:120%;
+height:100%;
+background:linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,0.25),
+transparent
+);
+transition:all 0.6s ease;
+}
+
+.pill:hover::after{left:120%;}
+.pill:hover{
+box-shadow:
+0 0 12px rgba(168,85,247,0.9),
+0 0 28px rgba(168,85,247,0.6);
+transform:translateY(-1px);
+}
+
+.roleBtn{
+width:200px;
+height:40px;
+margin:8px auto;
+border-radius:40px;
+border:1px solid rgba(168,85,247,0.8);
+background:
+radial-gradient(circle at 30% 30%,
+rgba(168,85,247,0.4),
+transparent 60%),
+radial-gradient(circle at 70% 70%,
+rgba(99,102,241,0.4),
+transparent 60%),
+linear-gradient(145deg,
+#0b0b0b,
+#1a1a1a);
+color:white;
+font-size:13px;
+cursor:pointer;
+box-shadow:
+0 0 10px rgba(168,85,247,0.5);
+transition:all 0.25s ease;
+}
+
+.roleBtn:hover{
+box-shadow:
+0 0 18px rgba(168,85,247,0.9),
+0 0 30px rgba(168,85,247,0.6);
+transform:translateY(-1px);
+}
+
+input{
+margin-top:10px;
+padding:10px;
+border-radius:25px;
+border:1px solid #333;
+background:#111;
+color:white;
+width:80%;
+}
+
+#transcript,#transcriptAtt{
+margin-top:16px;
+padding:10px;
+border-radius:10px;
+background:#0f0f0f;
+border:1px solid #333;
+font-size:12px;
+color:#ddd;
+height:70px;
+overflow-y:auto;
+text-align:left;
+}
+
+.namePill{
+display:inline-block;
+padding:6px 16px;
+border-radius:30px;
+border:1px solid rgba(168,85,247,0.8);
+background:
+radial-gradient(circle at 30% 30%,
+rgba(168,85,247,0.35),
+transparent 60%),
+linear-gradient(145deg,
+#0b0b0b,
+#151515);
+box-shadow:
+0 0 8px rgba(168,85,247,0.6);
+font-size:12px;
+margin-bottom:6px;
+white-space:nowrap;
+}
+
+#contextPage input{
+display:block;
+margin:10px auto;
+width:85%;
+box-sizing:border-box;
+}
+
+#contextFile{
+padding:6px 10px;
+cursor:pointer;
+}
+
+#contextPage h3{
+margin-top:14px;
+margin-bottom:6px;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">PROXYME ✦ AGENT</div>
+
+<div class="hero">
+<img class="blobs" src="images/blobs.png">
+<img class="star" src="images/star.png">
+</div>
+
+<div id="representPage" class="page active">
+<h3>Are we representing you?</h3>
+<button id="representYes" class="roleBtn">Yes</button>
+<button id="representNo" class="roleBtn">No</button>
+</div>
+
+<div id="contextPage" class="page">
+<h3>Your Name</h3>
+<input id="repName">
+
+<h3>Upload Context (.txt)</h3>
+<input type="file" id="contextFile">
+
+<h3 id="meetingLinkLabel" style="display:none;">Meeting Link</h3>
+<input id="meetingLinkInput" placeholder="Paste meeting link" style="display:none;">
+
+<button id="saveContext" class="roleBtn">Save</button>
+</div>
+
+<!-- 🔥 SINGLE UPLOAD + SUCCESS PAGE -->
+<div id="uploadPage" class="page">
+
+
+<h3 id="uploadStatus">Uploading...</h3>
+
+<div style="width:80%; margin:10px auto; height:8px; background:#111; border-radius:20px; overflow:hidden;">
+  <div id="uploadBar" style="width:0%; height:100%; background:linear-gradient(90deg,#a855f7,#6366f1); transition:width 0.4s ease;"></div>
+</div>
+
+<button id="closeBtn" class="roleBtn">Close</button>
+
+</div>
+
+<div id="rolePage" class="page">
+<h3>Select Role</h3>
+<button id="hostBtn" class="roleBtn">Host</button>
+<button id="attendeeBtn" class="roleBtn">Attendee</button>
+</div>
+
+<div id="hostPage" class="page">
+<div id="nameDisplay" class="namePill"></div>
+<div class="buttonRow">
+<button id="toggleBtn" class="pill control-pill">Turn OFF ProxyMe</button>
+<div id="listeningPill" class="pill listening-pill">LISTENING 🎤</div>
+</div>
+<div id="transcript">Waiting for speech...</div>
+</div>
+
+<div id="attendeePage" class="page">
+  <div id="nameDisplayAtt" class="namePill"></div>
+
+  <div class="buttonRow">
+    <!-- ✅ SAME toggle button -->
+    <button id="toggleBtnAtt" class="pill control-pill">
+      Turn OFF ProxyMe
+    </button>
+
+    <!-- ✅ SAME listening pill -->
+    <div id="listeningPillAtt" class="pill listening-pill">
+      LISTENING 🎤
+    </div>
+  </div>
+
+  <!-- ✅ SAME transcript -->
+  <div id="transcriptAtt">Waiting for speech...</div>
+</div>
+
+</div>
+
+<script src="popup.js"></script>
+
+</body>
+</html>
